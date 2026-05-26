@@ -1,124 +1,200 @@
-# 项目相关配置
+# =====================================================
+# 项目配置文件 - 完整版
+# =====================================================
+# 使用说明：
+# 1. 搜索所有 【填写】 标记
+# 2. 替换成你自己的真实配置
+# 3. 保存文件，启动项目
+# =====================================================
+
+# ==================== 项目基本配置 ====================
 ruoyi:
-  # 名称
   name: RuoYi
-  # 版本
   version: 3.9.2
-  # 版权年份
   copyrightYear: 2026
-  # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
+  # 【填写】文件上传路径
+  # Windows示例: D:/ruoyi/uploadPath
+  # Linux示例: /home/ruoyi/uploadPath
   profile: D:/ruoyi/uploadPath
-  # 静态资源路径
-  domain: http://10.161.9.239:8080
-  # 获取ip地址开关
+  # 【填写】你的服务器域名或IP
+  domain: http://localhost:8080
   addressEnabled: false
-  # 验证码类型 math 数字计算 char 字符验证
   captchaType: math
 
-# 开发环境配置
+# ==================== 服务器配置 ====================
 server:
-  # 服务器的HTTP端口，默认为8080
   port: 8080
   servlet:
-    # 应用的访问路径
     context-path: /
   tomcat:
-    # tomcat的URI编码
     uri-encoding: UTF-8
-    # 连接数满后的排队数，默认为100
     accept-count: 1000
     threads:
-      # tomcat最大线程数，默认为200
       max: 800
-      # Tomcat启动初始化的线程数，默认值10
       min-spare: 100
 
-# 日志配置
+# ==================== 日志配置 ====================
 logging:
   level:
     com.ruoyi: debug
     org.springframework: warn
 
-# 用户配置
+# ==================== 用户密码配置 ====================
 user:
   password:
-    # 密码最大错误次数
     maxRetryCount: 5
-    # 密码锁定时间（默认10分钟）
     lockTime: 10
 
-# Spring配置
+# ==================== Spring 核心配置 ====================
 spring:
-  # 资源信息
   messages:
-    # 国际化资源文件路径
     basename: i18n/messages
   profiles:
     active: druid,email,ai
-  # 文件上传
   servlet:
     multipart:
-      # 单个文件大小
       max-file-size: 10MB
-      # 设置总上传的文件大小
       max-request-size: 20MB
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-  # 服务模块
   devtools:
     restart:
-      # 热部署开关
       enabled: true
+
+  # ---------- Redis 配置 ----------
   data:
-    # redis 配置
     redis:
-      # 地址
+      # 【填写】Redis 主机地址
       host: localhost
-      # 端口，默认为6379
+      # 【填写】Redis 端口
       port: 6379
-      # 数据库索引
+      # 【填写】Redis 数据库索引
       database: 0
-      # 密码
+      # 【填写】Redis 密码（没有密码则留空）
       password:
-      # 连接超时时间
       timeout: 10s
       lettuce:
         pool:
-          # 连接池中的最小空闲连接
           min-idle: 0
-          # 连接池中的最大空闲连接
           max-idle: 8
-          # 连接池的最大数据库连接数
           max-active: 8
-          # #连接池最大阻塞等待时间（使用负值表示没有限制）
           max-wait: -1ms
 
-# token配置
+  # ---------- 数据库配置（Druid连接池）----------
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    druid:
+      master:
+        # 【填写】数据库连接地址
+        # 格式: jdbc:mysql://IP:端口/数据库名
+        url: jdbc:mysql://localhost:3306/ruoyi?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+        # 【填写】数据库用户名
+        username: root
+        # 【填写】数据库密码
+        password: your-password-here
+      slave:
+        enabled: false
+        url:
+        username:
+        password:
+      initialSize: 5
+      minIdle: 10
+      maxActive: 20
+      maxWait: 60000
+      connectTimeout: 30000
+      socketTimeout: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      maxEvictableIdleTimeMillis: 900000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+        allow:
+        url-pattern: /druid/*
+        login-username: ruoyi
+        login-password: 123456
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+
+  # ---------- 邮件配置 ----------
+  mail:
+    # 【填写】邮件服务器地址
+    # QQ邮箱: smtp.qq.com | 163: smtp.163.com | Gmail: smtp.gmail.com
+    host: smtp.qq.com
+    # 【填写】SMTP端口（587=TLS, 465=SSL）
+    port: 587
+    # 【填写】发件人邮箱（完整地址）
+    username: your-email@example.com
+    # 【填写】邮箱授权码（不是登录密码！）
+    password: your-auth-code
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+# ==================== 邮件模板配置 ====================
+mail:
+  template:
+    # 【可选】应用名称
+    app-name: "我的应用"
+    # 【可选】验证码有效期（分钟）
+    code-expire-minutes: 10
+
+# ==================== AI 服务配置 ====================
+ai:
+  python:
+    # 【填写】Python AI服务地址
+    # 本地: http://127.0.0.1:5000/chat/stream
+    url: http://127.0.0.1:5000/chat/stream
+    connect-timeout: 5000
+    read-timeout: 120000
+  cache:
+    personality-ttl-hours: 24
+    chat-history-ttl-hours: 24
+  lock:
+    wait-time: 3
+    lease-time: 30
+  sse:
+    timeout: 120000
+
+# ==================== Token 配置 ====================
 token:
-  # 令牌自定义标识
   header: Authorization
-  # 令牌密钥
+  # 【可选】修改为你自己的密钥
   secret: abcdefghijklmnopqrstuvwxyz
-  # 令牌有效期（默认30分钟）
   expireTime: 30
 
-# MyBatis配置
+# ==================== MyBatis 配置 ====================
 mybatis:
-  # 搜索指定包别名
   typeAliasesPackage: com.ruoyi.**.domain
-  # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapperLocations: classpath*:mapper/**/*Mapper.xml,classpath*:blog_comment/*Mapper.xml
-  # 加载全局的配置文件
   configLocation: classpath:mybatis/mybatis-config.xml
 
-# PageHelper分页插件
+# ==================== 分页插件配置 ====================
 pagehelper:
   helperDialect: mysql
   supportMethodsArguments: true
   params: count=countSql
 
-# Springdoc配置
+# ==================== API文档配置 ====================
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -132,21 +208,15 @@ springdoc:
       paths-to-match: '/**'
       packages-to-scan: com.ruoyi.web.controller.tool
 
-# 防盗链配置
+# ==================== 安全配置 ====================
 referer:
-  # 防盗链开关
   enabled: false
-  # 允许的域名列表
   allowed-domains: localhost,127.0.0.1,ruoyi.vip,www.ruoyi.vip
 
-# 防止XSS攻击
 xss:
-  # 过滤开关
   enabled: true
-  # 排除链接（多个用逗号分隔）
   excludes: /system/notice
-  # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
-# 本地开发时
+
 admin:
   allowed-ips: 127.0.0.1,0:0:0:0:0:0:0:1
