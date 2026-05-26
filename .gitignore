@@ -48,4 +48,6 @@ nbdist/
 
 #我自己的项目
 
-ruoyi-admin/src/main/resources/application-{ai,email,druid}.yml
+ruoyi-admin/src/main/resources/application-ai.yml
+ruoyi-admin/src/main/resources/application-email.yml
+ruoyi-admin/src/main/resources/application-druid.yml
