@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ai_chat.mapper.AiPersonalityMapper">
+    
+    <resultMap type="AiPersonality" id="AiPersonalityResult">
+        <result property="personalityId"    column="personality_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="name"    column="name"    />
+        <result property="content"    column="content"    />
+        <result property="greeting"    column="greeting"    />
+        <result property="isActive"    column="is_active"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAiPersonalityVo">
+        select personality_id, user_id, name, content, greeting, is_active, status, create_time, update_time from ai_personality
+    </sql>
+
+    <select id="selectAiPersonalityList" parameterType="AiPersonality" resultMap="AiPersonalityResult">
+        <include refid="selectAiPersonalityVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="greeting != null  and greeting != ''"> and greeting = #{greeting}</if>
+            <if test="isActive != null  and isActive != ''"> and is_active = #{isActive}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectAiPersonalityByPersonalityId" parameterType="Long" resultMap="AiPersonalityResult">
+        <include refid="selectAiPersonalityVo"/>
+        where personality_id = #{personalityId}
+    </select>
+
+    <insert id="insertAiPersonality" parameterType="AiPersonality" useGeneratedKeys="true" keyProperty="personalityId">
+        insert into ai_personality
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="greeting != null">greeting,</if>
+            <if test="isActive != null">is_active,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="greeting != null">#{greeting},</if>
+            <if test="isActive != null">#{isActive},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAiPersonality" parameterType="AiPersonality">
+        update ai_personality
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="greeting != null">greeting = #{greeting},</if>
+            <if test="isActive != null">is_active = #{isActive},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where personality_id = #{personalityId}
+    </update>
+
+    <delete id="deleteAiPersonalityByPersonalityId" parameterType="Long">
+        delete from ai_personality where personality_id = #{personalityId}
+    </delete>
+
+    <delete id="deleteAiPersonalityByPersonalityIds" parameterType="String">
+        delete from ai_personality where personality_id in 
+        <foreach item="personalityId" collection="array" open="(" separator="," close=")">
+            #{personalityId}
+        </foreach>
+    </delete>
+</mapper>

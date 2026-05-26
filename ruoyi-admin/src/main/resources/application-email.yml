@@ -1,0 +1,26 @@
+spring:
+  mail:
+    host: smtp.qq.com                    # 邮件服务器地址（QQ邮箱的SMTP服务器）
+    port: 587                            # SMTP端口号（587是TLS加密端口，465是SSL加密端口）
+    username: kbqn520this@qq.com         # 发件人邮箱账号
+    password: kwxwqjgfldgldeah           # 邮箱授权码（不是登录密码！需要去QQ邮箱设置里生成）
+    default-encoding: UTF-8              # 邮件默认编码格式（支持中文）
+    properties:                          # 额外配置参数
+      mail:
+        smtp:
+          auth: true                     # 启用身份验证（必须为true，否则无法登录）
+          starttls:
+            enable: true                 # 启用STARTTLS加密传输（防止邮件内容被窃听）
+            required: true               # 强制要求STARTTLS加密（如果服务器不支持就报错）
+
+  thymeleaf:
+    prefix: classpath:/templates/        # 模板文件存放路径（src/main/resources/templates/）
+    suffix: .html                        # 模板文件后缀（会自动拼接，如：verification-code → verification-code.html）
+    mode: HTML                           # 模板解析模式（HTML模式，还有TEXT、XML等）
+    encoding: UTF-8                      # 模板文件编码（支持中文）
+    cache: false                         # 是否缓存模板（false=每次修改都重新加载，方便开发调试；true=生产环境提高性能）
+
+mail:
+  template:
+    app-name: "咖啡馆"                  # 邮件中显示的应用名称（例如：欢迎使用【我的应用】）
+    code-expire-minutes: 10              # 验证码有效期（分钟），邮件里提示用户"10分钟内有效"

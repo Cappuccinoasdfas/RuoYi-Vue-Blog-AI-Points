@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>账号封禁通知</title>
+</head>
+<body style="font-family: 微软雅黑, Arial; padding: 20px;">
+
+<div style="max-width: 500px; margin: 0 auto; background: #f9f9f9; border-radius: 8px; overflow: hidden;">
+
+    <div style="background: #e74c3c; padding: 20px; text-align: center; color: white;">
+        <h2 style="margin: 0;">⚠️ 账号封禁通知</h2>
+    </div>
+
+    <div style="padding: 25px;">
+        <p>亲爱的用户 <strong th:text="${username}">用户名</strong>：</p>
+
+        <p>您的账号因 <strong th:text="${description}">违规原因</strong> 违反社区规定，已被暂时封禁。</p>
+
+        <div style="background: #f0f0f0; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <p style="margin: 5px 0;"><strong>🔒 封禁时间：</strong> <span th:text="${#temporals.format(time, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+            <p style="margin: 5px 0;"><strong>🔓 解封时间：</strong> <span th:text="${#temporals.format(unblockTime, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+        </div>
+
+        <p style="color: #e74c3c;">封禁期间无法使用账号，到期自动解封。</p>
+        <p>如有疑问请联系客服。</p>
+    </div>
+
+    <div style="background: #eee; padding: 15px; text-align: center; font-size: 12px; color: #999;">
+        <span th:text="${appName}">若依博客</span> 团队
+    </div>
+<!--    <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 5px;">-->
+<!--        <p style="margin: 0 0 10px 0;"><strong>📢 如果您认为封禁有误：</strong></p>-->
+<!--        <a href="http://172.19.0.239:80/"-->
+<!--           style="display: inline-block; background: #ffc107; color: #333; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">-->
+<!--            📝 提交申诉-->
+<!--        </a>-->
+<!--        <p style="margin: 10px 0 0 0; font-size: 12px; color: #856404;">-->
+<!--            申诉后我们将在1-3个工作日内处理-->
+<!--        </p>-->
+<!--    </div>-->
+</div>
+
+</body>
+</html>

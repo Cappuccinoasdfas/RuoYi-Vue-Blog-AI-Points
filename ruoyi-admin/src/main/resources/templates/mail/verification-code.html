@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${subject}">注册验证码</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .container {
+            max-width: 500px;
+            margin: 30px auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 500;
+        }
+        .content {
+            padding: 35px 30px;
+        }
+        .greeting {
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 25px;
+        }
+        .code-box {
+            background: #f8f9fc;
+            border: 1px dashed #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 25px 0;
+        }
+        .code-label {
+            font-size: 13px;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .code-value {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: 8px;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+        }
+        .expire-notice {
+            font-size: 13px;
+            color: #999999;
+            margin-top: 8px;
+        }
+        .tips {
+            background: #fff8e6;
+            border-left: 4px solid #ffc107;
+            padding: 15px 18px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .tips h4 {
+            margin: 0 0 8px;
+            color: #f57c00;
+            font-size: 14px;
+        }
+        .tips p {
+            margin: 5px 0;
+            color: #666666;
+            font-size: 13px;
+        }
+        .footer {
+            padding: 20px 30px;
+            background: #fafbfc;
+            text-align: center;
+            border-top: 1px solid #eeeeee;
+        }
+        .footer p {
+            margin: 5px 0;
+            color: #999999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🔐 验证您的邮箱</h1>
+    </div>
+    <div class="content">
+        <div class="greeting">
+            <strong th:text="'您好，' + ${username} + '！'">您好！</strong>
+            感谢您注册 <span th:text="${appName}">应用名称</span>。
+        </div>
+        <div class="code-box">
+            <div class="code-label">您的验证码</div>
+            <div class="code-value" th:text="${code}">123456</div>
+            <div class="expire-notice">
+                ⏰ 验证码 <span th:text="${expireMinutes}">5</span> 分钟内有效，请尽快填写
+            </div>
+        </div>
+        <div class="tips">
+            <h4>🛡️ 安全提示</h4>
+            <p>• 请勿将验证码告知他人</p>
+            <p>• 如非本人操作，请忽略此邮件</p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>此邮件由系统自动发送，请勿直接回复</p>
+        <p th:text="'© ' + ${year} + ' ' + ${appName} + '. All rights reserved.'">© 2026 应用名称</p>
+    </div>
+</div>
+</body>
+</html>

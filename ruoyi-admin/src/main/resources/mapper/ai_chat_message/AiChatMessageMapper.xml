@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ai_chat.mapper.AiChatMessageMapper">
+    
+    <resultMap type="AiChatMessage" id="AiChatMessageResult">
+        <result property="messageId"    column="message_id"    />
+        <result property="sessionId"    column="session_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="role"    column="role"    />
+        <result property="content"    column="content"    />
+        <result property="tokens"    column="tokens"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectAiChatMessageVo">
+        select message_id, session_id, user_id, role, content, tokens, create_time from ai_chat_message
+    </sql>
+
+    <select id="selectAiChatMessageList" parameterType="AiChatMessage" resultMap="AiChatMessageResult">
+        <include refid="selectAiChatMessageVo"/>
+        <where>  
+            <if test="sessionId != null "> and session_id = #{sessionId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="role != null  and role != ''"> and role = #{role}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="tokens != null "> and tokens = #{tokens}</if>
+        </where>
+    </select>
+    
+    <select id="selectAiChatMessageByMessageId" parameterType="Long" resultMap="AiChatMessageResult">
+        <include refid="selectAiChatMessageVo"/>
+        where message_id = #{messageId}
+    </select>
+
+    <insert id="insertAiChatMessage" parameterType="AiChatMessage" useGeneratedKeys="true" keyProperty="messageId">
+        insert into ai_chat_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sessionId != null">session_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="role != null and role != ''">role,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="tokens != null">tokens,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sessionId != null">#{sessionId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="role != null and role != ''">#{role},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="tokens != null">#{tokens},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAiChatMessage" parameterType="AiChatMessage">
+        update ai_chat_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sessionId != null">session_id = #{sessionId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="role != null and role != ''">role = #{role},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="tokens != null">tokens = #{tokens},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where message_id = #{messageId}
+    </update>
+
+    <delete id="deleteAiChatMessageByMessageId" parameterType="Long">
+        delete from ai_chat_message where message_id = #{messageId}
+    </delete>
+
+    <delete id="deleteAiChatMessageByMessageIds" parameterType="String">
+        delete from ai_chat_message where message_id in 
+        <foreach item="messageId" collection="array" open="(" separator="," close=")">
+            #{messageId}
+        </foreach>
+    </delete>
+</mapper>

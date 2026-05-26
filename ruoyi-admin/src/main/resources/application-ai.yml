@@ -1,0 +1,21 @@
+# AI聊天服务配置
+ai:
+  # Python服务配置
+  python:
+    url:  http://127.0.0.1:5000/chat/stream
+    connect-timeout: 5000
+    read-timeout: 120000
+
+  # 缓存配置
+  cache:
+    personality-ttl-hours: 24      # 性格配置缓存时间
+    chat-history-ttl-hours: 24     # 聊天记录缓存时间
+
+  # 分布式锁配置
+  lock:
+    wait-time: 3                   # 等待获取锁的时间（秒）
+    lease-time: 30                 # 锁持有时间（秒）
+
+  # SSE配置
+  sse:
+    timeout: 120000                # SSE连接超时（毫秒）

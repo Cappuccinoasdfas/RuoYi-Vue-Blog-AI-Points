@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ai_user_account.mapper.AiUserAccountMapper">
+    
+    <resultMap type="AiUserAccount" id="AiUserAccountResult">
+        <result property="accountId"    column="account_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="balance"    column="balance"    />
+        <result property="totalEarned"    column="total_earned"    />
+        <result property="totalSpent"    column="total_spent"    />
+        <result property="version"    column="version"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAiUserAccountVo">
+        select account_id, user_id, balance, total_earned, total_spent, version, create_time, update_time from ai_user_account
+    </sql>
+
+    <select id="selectAiUserAccountList" parameterType="AiUserAccount" resultMap="AiUserAccountResult">
+        <include refid="selectAiUserAccountVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="balance != null "> and balance = #{balance}</if>
+            <if test="totalEarned != null "> and total_earned = #{totalEarned}</if>
+            <if test="totalSpent != null "> and total_spent = #{totalSpent}</if>
+            <if test="version != null "> and version = #{version}</if>
+        </where>
+    </select>
+    
+    <select id="selectAiUserAccountByAccountId" parameterType="Long" resultMap="AiUserAccountResult">
+        <include refid="selectAiUserAccountVo"/>
+        where account_id = #{accountId}
+    </select>
+
+    <insert id="insertAiUserAccount" parameterType="AiUserAccount" useGeneratedKeys="true" keyProperty="accountId">
+        insert into ai_user_account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="balance != null">balance,</if>
+            <if test="totalEarned != null">total_earned,</if>
+            <if test="totalSpent != null">total_spent,</if>
+            <if test="version != null">version,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="balance != null">#{balance},</if>
+            <if test="totalEarned != null">#{totalEarned},</if>
+            <if test="totalSpent != null">#{totalSpent},</if>
+            <if test="version != null">#{version},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAiUserAccount" parameterType="AiUserAccount">
+        update ai_user_account
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="totalEarned != null">total_earned = #{totalEarned},</if>
+            <if test="totalSpent != null">total_spent = #{totalSpent},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where account_id = #{accountId}
+    </update>
+
+    <delete id="deleteAiUserAccountByAccountId" parameterType="Long">
+        delete from ai_user_account where account_id = #{accountId}
+    </delete>
+
+    <delete id="deleteAiUserAccountByAccountIds" parameterType="String">
+        delete from ai_user_account where account_id in 
+        <foreach item="accountId" collection="array" open="(" separator="," close=")">
+            #{accountId}
+        </foreach>
+    </delete>
+</mapper>

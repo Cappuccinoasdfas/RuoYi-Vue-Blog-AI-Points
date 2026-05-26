@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ai_points_product.mapper.AiPointsProductMapper">
+    
+    <resultMap type="AiPointsProduct" id="AiPointsProductResult">
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productType"    column="product_type"    />
+        <result property="price"    column="price"    />
+        <result property="durationDays"    column="duration_days"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectAiPointsProductVo">
+        select product_id, product_name, product_type, price, duration_days, description, status, create_time from ai_points_product
+    </sql>
+
+    <select id="selectAiPointsProductList" parameterType="AiPointsProduct" resultMap="AiPointsProductResult">
+        <include refid="selectAiPointsProductVo"/>
+        <where>  
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="productType != null  and productType != ''"> and product_type = #{productType}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="durationDays != null "> and duration_days = #{durationDays}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectAiPointsProductByProductId" parameterType="Long" resultMap="AiPointsProductResult">
+        <include refid="selectAiPointsProductVo"/>
+        where product_id = #{productId}
+    </select>
+
+    <insert id="insertAiPointsProduct" parameterType="AiPointsProduct" useGeneratedKeys="true" keyProperty="productId">
+        insert into ai_points_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="productType != null and productType != ''">product_type,</if>
+            <if test="price != null">price,</if>
+            <if test="durationDays != null">duration_days,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="productType != null and productType != ''">#{productType},</if>
+            <if test="price != null">#{price},</if>
+            <if test="durationDays != null">#{durationDays},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAiPointsProduct" parameterType="AiPointsProduct">
+        update ai_points_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="productType != null and productType != ''">product_type = #{productType},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="durationDays != null">duration_days = #{durationDays},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where product_id = #{productId}
+    </update>
+
+    <delete id="deleteAiPointsProductByProductId" parameterType="Long">
+        delete from ai_points_product where product_id = #{productId}
+    </delete>
+
+    <delete id="deleteAiPointsProductByProductIds" parameterType="String">
+        delete from ai_points_product where product_id in 
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+</mapper>

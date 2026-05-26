@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ai_points_product.mapper.AiUserPurchaseMapper">
+    
+    <resultMap type="AiUserPurchase" id="AiUserPurchaseResult">
+        <result property="purchaseId"    column="purchase_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="pointsCost"    column="points_cost"    />
+        <result property="expireTime"    column="expire_time"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectAiUserPurchaseVo">
+        select purchase_id, user_id, product_id, points_cost, expire_time, status, create_time from ai_user_purchase
+    </sql>
+
+    <select id="selectAiUserPurchaseList" parameterType="AiUserPurchase" resultMap="AiUserPurchaseResult">
+        <include refid="selectAiUserPurchaseVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="pointsCost != null "> and points_cost = #{pointsCost}</if>
+            <if test="expireTime != null "> and expire_time = #{expireTime}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectAiUserPurchaseByPurchaseId" parameterType="Long" resultMap="AiUserPurchaseResult">
+        <include refid="selectAiUserPurchaseVo"/>
+        where purchase_id = #{purchaseId}
+    </select>
+
+    <insert id="insertAiUserPurchase" parameterType="AiUserPurchase" useGeneratedKeys="true" keyProperty="purchaseId">
+        insert into ai_user_purchase
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="pointsCost != null">points_cost,</if>
+            <if test="expireTime != null">expire_time,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="pointsCost != null">#{pointsCost},</if>
+            <if test="expireTime != null">#{expireTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAiUserPurchase" parameterType="AiUserPurchase">
+        update ai_user_purchase
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="pointsCost != null">points_cost = #{pointsCost},</if>
+            <if test="expireTime != null">expire_time = #{expireTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where purchase_id = #{purchaseId}
+    </update>
+
+    <delete id="deleteAiUserPurchaseByPurchaseId" parameterType="Long">
+        delete from ai_user_purchase where purchase_id = #{purchaseId}
+    </delete>
+
+    <delete id="deleteAiUserPurchaseByPurchaseIds" parameterType="String">
+        delete from ai_user_purchase where purchase_id in 
+        <foreach item="purchaseId" collection="array" open="(" separator="," close=")">
+            #{purchaseId}
+        </foreach>
+    </delete>
+</mapper>
