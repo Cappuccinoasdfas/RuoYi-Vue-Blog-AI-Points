@@ -152,7 +152,18 @@ lock.tryLock(3, 30, TimeUnit.SECONDS);
 # 4. 运行 RuoYiApplication.java
 # 5. AI功能需本地安装Ollama：ollama pull qwen2.5:1.5b
 ```
+## 待开发
 
+### 1. 爬虫技术引入
+待开发
+
+### 2. 充值系统引入
+待开发
+
+### 3. AI性格文件修改
+当前仅支持后端修改，后续功能待定
+
+### 具体展示
 <table align="center">
   <tr>
     <td align="center"><img src="./img/1.png" width="250"/><br/>效果图1</td>
